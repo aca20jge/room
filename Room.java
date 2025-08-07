@@ -31,8 +31,8 @@ public class Room {
     parts.add(makeFloor(gl));
     parts.add(makeBackWall(gl));
     parts.add(makeRightWall(gl));
-    parts.add(makeLeftWall(gl));
-    parts.add(makeWindow(gl));
+    parts.addAll(makeLeftWall(gl));
+    parts.add(makeCloud(gl));
     parts.add(makeNoticeBoard(gl));
     parts.add(makePoster(gl, -2f));
     parts.add(makePoster(gl, 0f));
@@ -84,34 +84,82 @@ public class Room {
     return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera, wallTex);
   }
 
-  private ModelMultipleLights makeLeftWall(GL3 gl) {
+  private ArrayList<ModelMultipleLights> makeLeftWall(GL3 gl) {
+    ArrayList<ModelMultipleLights> wall = new ArrayList<>();
+    Vec3 basecolor = new Vec3(0.5f, 0.5f, 0.5f);
+    Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
+
+    float windowW = 6f;
+    float windowH = 6f;
+    float sideW = (size - windowW) * 0.5f;
+    float borderH = (size - windowH) * 0.5f;
+
+    // top and bottom segments
+    wall.add(makeWallPanel(gl, size, borderH, size - borderH * 0.5f, 0));
+    wall.add(makeWallPanel(gl, size, borderH, borderH * 0.5f, 0));
+
+    // left and right segments
+    wall.add(makeWallPanel(gl, sideW, windowH, borderH + windowH * 0.5f, -windowW * 0.5f - sideW * 0.5f));
+    wall.add(makeWallPanel(gl, sideW, windowH, borderH + windowH * 0.5f, windowW * 0.5f + sideW * 0.5f));
+
+    // frame around the cutout
+    float frame = 0.2f;
+    float windowTop = borderH + windowH;
+    float windowBottom = borderH;
+    float windowCentreY = borderH + windowH * 0.5f;
+    wall.add(makeFramePanel(gl, windowW + 2 * frame, frame, windowTop + frame * 0.5f, 0));
+    wall.add(makeFramePanel(gl, windowW + 2 * frame, frame, windowBottom - frame * 0.5f, 0));
+    wall.add(makeFramePanel(gl, frame, windowH + 2 * frame, windowCentreY, -windowW * 0.5f - frame * 0.5f));
+    wall.add(makeFramePanel(gl, frame, windowH + 2 * frame, windowCentreY, windowW * 0.5f + frame * 0.5f));
+
+    return wall;
+  }
+
+  private ModelMultipleLights makeCloud(GL3 gl) {
+    String name = "cloud";
+    Vec3 basecolor = new Vec3(1.0f, 1.0f, 1.0f);
+    Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
+    float windowW = 6f;
+    float windowH = 6f;
+    float w = windowW + 0.5f;
+    float h = windowH + 0.5f;
+    float windowCentreY = (size - windowH) * 0.5f + windowH * 0.5f;
+    Mat4 modelMatrix = new Mat4(1);
+    modelMatrix = Mat4.multiply(Mat4Transform.scale(w, 1f, h), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundY(90), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundZ(-90), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.translate(-size * 0.5f - 0.5f, windowCentreY, 0), modelMatrix);
+    Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
+    Shader shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_1t.txt");
+    return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera, windowTex);
+  }
+
+  private ModelMultipleLights makeWallPanel(GL3 gl, float w, float h, float y, float z) {
     String name = "left_wall";
     Vec3 basecolor = new Vec3(0.5f, 0.5f, 0.5f);
     Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
     Mat4 modelMatrix = new Mat4(1);
-    modelMatrix = Mat4.multiply(Mat4Transform.scale(size, 1f, size), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.scale(w, 1f, h), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundY(90), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundZ(-90), modelMatrix);
-    modelMatrix = Mat4.multiply(Mat4Transform.translate(-size * 0.5f, size * 0.5f, 0), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.translate(-size * 0.5f, y, z), modelMatrix);
     Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
     Shader shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_0t.txt");
     return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera);
   }
 
-  private ModelMultipleLights makeWindow(GL3 gl) {
-    String name = "window";
-    Vec3 basecolor = new Vec3(1.0f, 1.0f, 1.0f);
+  private ModelMultipleLights makeFramePanel(GL3 gl, float w, float h, float y, float z) {
+    String name = "frame";
+    Vec3 basecolor = new Vec3(0.0f, 0.0f, 0.0f);
     Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
-    float w = 6f;
-    float h = 6f;
     Mat4 modelMatrix = new Mat4(1);
     modelMatrix = Mat4.multiply(Mat4Transform.scale(w, 1f, h), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundY(90), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundZ(-90), modelMatrix);
-    modelMatrix = Mat4.multiply(Mat4Transform.translate(-size * 0.5f + 0.01f, size * 0.5f, 0), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.translate(-size * 0.5f + 0.01f, y, z), modelMatrix);
     Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-    Shader shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_1t.txt");
-    return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera, windowTex);
+    Shader shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_0t.txt");
+    return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera);
   }
 
   private ModelMultipleLights makeNoticeBoard(GL3 gl) {
