@@ -113,6 +113,10 @@ public class ModelMultipleLights {
 
     for (int i=0; i<lights.length; i++) {
       shader.setVec3(gl, "lights["+i+"].position", lights[i].getPosition());
+      shader.setVec3(gl, "lights["+i+"].direction", lights[i].getDirection());
+      shader.setFloat(gl, "lights["+i+"].cutOff", lights[i].getCutOff());
+      shader.setFloat(gl, "lights["+i+"].outerCutOff", lights[i].getOuterCutOff());
+      shader.setInt(gl, "lights["+i+"].on", lights[i].isOn() ? 1 : 0);
       shader.setVec3(gl, "lights["+i+"].ambient", lights[i].getMaterial().getAmbient());
       shader.setVec3(gl, "lights["+i+"].diffuse", lights[i].getMaterial().getDiffuse());
       shader.setVec3(gl, "lights["+i+"].specular", lights[i].getMaterial().getSpecular());

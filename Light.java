@@ -7,6 +7,10 @@ public class Light {
   
   private Material material;
   private Vec3 position;
+  private Vec3 direction;
+  private float cutOff;
+  private float outerCutOff;
+  private boolean on;
   private Mat4 model;
   private Shader shader;
   private Camera camera;
@@ -18,6 +22,10 @@ public class Light {
     material.setDiffuse(0.7f, 0.7f, 0.7f);
     material.setSpecular(0.7f, 0.7f, 0.7f);
     position = new Vec3(3f,2f,1f);
+    direction = new Vec3(0f,-1f,0f);
+    cutOff = -1f;
+    outerCutOff = -1f;
+    on = true;
     model = new Mat4(1);
     
     fillBuffers(gl);
@@ -50,6 +58,39 @@ public class Light {
   
   public void setCamera(Camera camera) {
     this.camera = camera;
+  }
+
+  public void setDirection(Vec3 d) {
+    direction = new Vec3(d);
+    direction.normalize();
+  }
+
+  public Vec3 getDirection() {
+    return direction;
+  }
+
+  public void setCutOff(float cut) {
+    cutOff = cut;
+  }
+
+  public float getCutOff() {
+    return cutOff;
+  }
+
+  public void setOuterCutOff(float cut) {
+    outerCutOff = cut;
+  }
+
+  public float getOuterCutOff() {
+    return outerCutOff;
+  }
+
+  public void setOn(boolean on) {
+    this.on = on;
+  }
+
+  public boolean isOn() {
+    return on;
   }
   
   /*public void setPerspective(Mat4 perspective) {
