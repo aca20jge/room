@@ -23,6 +23,9 @@ public class Room {
     wallTex.bind(gl);
     wallTex.setTexParameteri(gl, GL3.GL_TEXTURE_WRAP_S, GL3.GL_REPEAT);
     wallTex.setTexParameteri(gl, GL3.GL_TEXTURE_WRAP_T, GL3.GL_REPEAT);
+    windowTex.bind(gl);
+    windowTex.setTexParameteri(gl, GL3.GL_TEXTURE_WRAP_S, GL3.GL_REPEAT);
+    windowTex.setTexParameteri(gl, GL3.GL_TEXTURE_WRAP_T, GL3.GL_REPEAT);
 
     parts = new ArrayList<>();
     parts.add(makeFloor(gl));
