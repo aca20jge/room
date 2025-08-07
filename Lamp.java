@@ -15,7 +15,6 @@ public class Lamp {
   private Light[] lights;
   private Light bulbLight;
   private Texture lampTex;
-  private Texture bulbTex;
 
   // transformation state
   private float baseSlide = 0f;
@@ -28,7 +27,7 @@ public class Lamp {
   // dimensions
   private float baseW = 0.5f, baseH = 0.2f, baseD = 0.5f;
   private float armW = 0.1f, armL = 1.0f;
-  private float headW = 0.3f, headH = 0.2f, headD = 0.4f;
+  private float headW = 0.4f, headH = 0.3f, headD = 0.5f;
   private float hornW = 0.1f, hornH = 0.2f, hornD = 0.1f;
   private float bulbSize = 0.2f;
 
@@ -43,12 +42,10 @@ public class Lamp {
     this.lights = lights;
     this.bulbLight = bulbLight;
 
-    lampTex = TextureLibrary.loadTexture(gl, "assets/textures/container2.jpg");
+    lampTex = TextureLibrary.loadTexture(gl, "assets/textures/lamp.jpg");
     lampTex.bind(gl);
     lampTex.setTexParameteri(gl, GL3.GL_TEXTURE_WRAP_S, GL3.GL_REPEAT);
     lampTex.setTexParameteri(gl, GL3.GL_TEXTURE_WRAP_T, GL3.GL_REPEAT);
-
-    bulbTex = TextureLibrary.loadTexture(gl, "assets/textures/cloud.jpg");
 
     parts = new ArrayList<>();
     base = makeBase(gl);
@@ -105,11 +102,11 @@ public class Lamp {
 
   private ModelMultipleLights makeBulb(GL3 gl) {
     Vec3 basecolor = new Vec3(1f,1f,1f);
-    Material material = new Material(basecolor, basecolor, new Vec3(0.3f,0.3f,0.3f), 32f);
+    Material material = new Material(basecolor, basecolor, basecolor, 32f);
     Mat4 model = Mat4Transform.scale(bulbSize, bulbSize, bulbSize);
     Mesh mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
-    Shader shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_1t.txt");
-    return new ModelMultipleLights("lamp_bulb", mesh, model, shader, material, lights, camera, bulbTex);
+    Shader shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_0t.txt");
+    return new ModelMultipleLights("lamp_bulb", mesh, model, shader, material, lights, camera);
   }
 
   private Mat4 baseMatrix() {
@@ -173,7 +170,7 @@ public class Lamp {
   private Mat4 bulbMatrix() {
     Mat4 m = new Mat4(1);
     m = Mat4.multiply(Mat4Transform.scale(bulbSize, bulbSize, bulbSize), m);
-    m = Mat4.multiply(Mat4Transform.translate(0, 0, -headD*0.5f - bulbSize*0.5f), m);
+    m = Mat4.multiply(Mat4Transform.translate(0, 0, -headD*0.5f + bulbSize*0.25f), m);
     m = Mat4.multiply(Mat4Transform.rotateAroundX(headX), m);
     m = Mat4.multiply(Mat4Transform.translate(0, armL, 0), m);
     m = Mat4.multiply(Mat4Transform.rotateAroundX(upperX), m);
@@ -230,7 +227,6 @@ public class Lamp {
     }
     bulbModel.dispose(gl);
     lampTex.destroy(gl);
-    bulbTex.destroy(gl);
   }
 
   // control methods
