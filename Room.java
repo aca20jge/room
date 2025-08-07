@@ -58,8 +58,8 @@ public class Room {
     Mat4 modelMatrix = new Mat4(1);
     modelMatrix = Mat4.multiply(Mat4Transform.scale(size, 1f, size), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundY(90), modelMatrix);
-    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundZ(-90), modelMatrix);
-    modelMatrix = Mat4.multiply(Mat4Transform.translate(-size * 0.5f, size * 0.5f, 0), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundZ(90), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.translate(size * 0.5f, size * 0.5f, 0), modelMatrix);
     Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
     Shader shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_0t.txt");
     return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera);
