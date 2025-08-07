@@ -19,7 +19,7 @@ public class Table {
   private float topDepth = 1.5f;
   private float topThickness = 0.1f;
   private float legThickness = 0.2f;
-  private float legHeight = 1f;
+  private float legHeight = 1.2f;
 
   public Table(GL3 gl, Camera camera, Light[] lights, float roomSize) {
     this.camera = camera;
