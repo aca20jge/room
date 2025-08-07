@@ -21,7 +21,7 @@ public class Lamp {
   private float lowerX = 0f;
   private float lowerY = 0f;
   private float upperX = 0f;
-  private float headX = 0f;
+  private float headX = -90f;
   private boolean lightOn = true;
 
   // dimensions
@@ -184,12 +184,15 @@ public class Lamp {
   private void updateLight() {
     Mat4 m = bulbMatrix();
     Vec3 pos = new Vec3(m.get(0,3), m.get(1,3), m.get(2,3));
-    bulbLight.setPosition(pos);
     float totalX = lowerX + upperX + headX;
     float dirX = -(float)Math.sin(Math.toRadians(lowerY));
     float dirY = (float)Math.sin(Math.toRadians(totalX)) * (float)Math.cos(Math.toRadians(lowerY));
     float dirZ = -(float)Math.cos(Math.toRadians(totalX)) * (float)Math.cos(Math.toRadians(lowerY));
-    bulbLight.setDirection(new Vec3(dirX, dirY, dirZ));
+    Vec3 direction = new Vec3(dirX, dirY, dirZ);
+    Vec3 offset = Vec3.multiply(direction, bulbSize * 0.5f);
+    pos.add(offset);
+    bulbLight.setPosition(pos);
+    bulbLight.setDirection(direction);
     bulbLight.setCutOff((float)Math.cos(Math.toRadians(15f)));
     bulbLight.setOuterCutOff((float)Math.cos(Math.toRadians(25f)));
     bulbLight.setOn(lightOn);
