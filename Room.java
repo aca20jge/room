@@ -123,7 +123,7 @@ public class Room {
     Mat4 modelMatrix = new Mat4(1);
     modelMatrix = Mat4.multiply(Mat4Transform.scale(w, 1f, h), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
-    modelMatrix = Mat4.multiply(Mat4Transform.translate(0, size * 0.6f, -size * 0.5f + 0.01f), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.translate(0, size * 0.6f, -size * 0.5f + 0.05f), modelMatrix);
     Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
     Shader shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_0t.txt");
     return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera);
@@ -138,7 +138,7 @@ public class Room {
     Mat4 modelMatrix = new Mat4(1);
     modelMatrix = Mat4.multiply(Mat4Transform.scale(w, 1f, h), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
-    modelMatrix = Mat4.multiply(Mat4Transform.translate(xOffset, size * 0.6f, -size * 0.5f + 0.02f), modelMatrix);
+    modelMatrix = Mat4.multiply(Mat4Transform.translate(xOffset, size * 0.6f, -size * 0.5f + 0.06f), modelMatrix);
     Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
     Shader shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_1t.txt");
     return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera, wallTex);
