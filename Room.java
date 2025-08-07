@@ -11,6 +11,7 @@ public class Room {
   private Camera camera;
   private Light[] lights;
   private Texture floorTex, wallTex, windowTex;
+  private Texture noticeboardTex, poster1Tex, poster2Tex, poster3Tex, poster3Specular;
   private float size = 16f;
 
   /**
@@ -36,6 +37,12 @@ public class Room {
     windowTex.setTexParameteri(gl, GL3.GL_TEXTURE_WRAP_S, GL3.GL_REPEAT);
     windowTex.setTexParameteri(gl, GL3.GL_TEXTURE_WRAP_T, GL3.GL_REPEAT);
 
+    noticeboardTex = TextureLibrary.loadTexture(gl, "assets/textures/noticeboard.jpg");
+    poster1Tex = TextureLibrary.loadTexture(gl, "assets/textures/wattBook.jpg");
+    poster2Tex = TextureLibrary.loadTexture(gl, "assets/textures/poster2.jpg");
+    poster3Tex = TextureLibrary.loadTexture(gl, "assets/textures/poster3.jpg");
+    poster3Specular = TextureLibrary.loadTexture(gl, "assets/textures/poster3_specular.jpg");
+
     parts = new ArrayList<>();
     parts.add(makeFloor(gl));
     parts.add(makeBackWall(gl));
@@ -43,9 +50,9 @@ public class Room {
     parts.addAll(makeLeftWall(gl));
     parts.add(makeCloud(gl));
     parts.add(makeNoticeBoard(gl));
-    parts.add(makePoster(gl, -2f));
-    parts.add(makePoster(gl, 0f));
-    parts.add(makePoster(gl, 2f));
+    parts.add(makePoster(gl, -2f, poster1Tex, null));
+    parts.add(makePoster(gl, 0f, poster2Tex, null));
+    parts.add(makePoster(gl, 2f, poster3Tex, poster3Specular));
   }
 
   private ModelMultipleLights makeFloor(GL3 gl) {
@@ -173,7 +180,7 @@ public class Room {
 
   private ModelMultipleLights makeNoticeBoard(GL3 gl) {
     String name = "board";
-    Vec3 basecolor = new Vec3(0.55f, 0.35f, 0.15f);
+    Vec3 basecolor = new Vec3(1.0f, 1.0f, 1.0f);
     Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
     float w = 6f;
     float h = 3f;
@@ -182,11 +189,11 @@ public class Room {
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.translate(0, size * 0.6f, -size * 0.5f + 0.05f), modelMatrix);
     Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-    Shader shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_0t.txt");
-    return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera);
+    Shader shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_1t.txt");
+    return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera, noticeboardTex);
   }
 
-  private ModelMultipleLights makePoster(GL3 gl, float xOffset) {
+  private ModelMultipleLights makePoster(GL3 gl, float xOffset, Texture diffuse, Texture specular) {
     String name = "poster";
     Vec3 basecolor = new Vec3(1.0f, 1.0f, 1.0f);
     Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
@@ -197,8 +204,16 @@ public class Room {
     modelMatrix = Mat4.multiply(Mat4Transform.rotateAroundX(90), modelMatrix);
     modelMatrix = Mat4.multiply(Mat4Transform.translate(xOffset, size * 0.6f, -size * 0.5f + 0.06f), modelMatrix);
     Mesh mesh = new Mesh(gl, TwoTriangles.vertices.clone(), TwoTriangles.indices.clone());
-    Shader shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_1t.txt");
-    return new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera, wallTex);
+    Shader shader;
+    ModelMultipleLights poster;
+    if (specular != null) {
+      shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_2t.txt");
+      poster = new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera, diffuse, specular);
+    } else {
+      shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_1t.txt");
+      poster = new ModelMultipleLights(name, mesh, modelMatrix, shader, material, lights, camera, diffuse);
+    }
+    return poster;
   }
 
   public void render(GL3 gl) {
@@ -211,5 +226,10 @@ public class Room {
     for (ModelMultipleLights m : parts) {
       m.dispose(gl);
     }
+    noticeboardTex.destroy(gl);
+    poster1Tex.destroy(gl);
+    poster2Tex.destroy(gl);
+    poster3Tex.destroy(gl);
+    poster3Specular.destroy(gl);
   }
 }
