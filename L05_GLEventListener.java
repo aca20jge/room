@@ -59,7 +59,9 @@ public class L05_GLEventListener implements GLEventListener {
   public void dispose(GLAutoDrawable drawable) {
     GL3 gl = drawable.getGL().getGL3();
     room.dispose(gl);
+    if (lamp != null) lamp.dispose(gl);
     lights[0].dispose(gl);
+    lights[1].dispose(gl);
     textures.destroy(gl);
   }
 
@@ -73,7 +75,8 @@ public class L05_GLEventListener implements GLEventListener {
   private TextureLibrary textures;
 
   private Room room;
-  private Light[] lights = new Light[1];
+  private Light[] lights = new Light[2];
+  private Lamp lamp;
 
   private void loadTextures(GL3 gl) {
     textures = new TextureLibrary();
@@ -88,14 +91,27 @@ public class L05_GLEventListener implements GLEventListener {
     lights[0] = new Light(gl);
     lights[0].setCamera(camera);
     lights[0].setPosition(new Vec3(0f, 10f, 0f));
+    lights[0].setCutOff(-1f);
+    lights[1] = new Light(gl);
+    lights[1].setCamera(camera);
+    lights[1].setCutOff((float)Math.cos(Math.toRadians(15f)));
+    lights[1].setOuterCutOff((float)Math.cos(Math.toRadians(25f)));
     room = new Room(gl, camera, lights, textures.get("chequerboard"), textures.get("container_diffuse"), textures.get("cloud"));
+    lamp = new Lamp(gl, camera, lights, lights[1]);
   }
   
   public void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
     lights[0].render(gl);
-
+    lamp.render(gl);
     room.render(gl);
   }
+
+  public void slideBase(float d) { if (lamp!=null) lamp.slideBase(d); }
+  public void rotateLowerArmX(float d) { if (lamp!=null) lamp.rotateLowerArmX(d); }
+  public void rotateLowerArmY(float d) { if (lamp!=null) lamp.rotateLowerArmY(d); }
+  public void rotateUpperArmX(float d) { if (lamp!=null) lamp.rotateUpperArmX(d); }
+  public void rotateHeadX(float d) { if (lamp!=null) lamp.rotateHeadX(d); }
+  public void toggleLamp() { if (lamp!=null) lamp.toggleLight(); }
 }

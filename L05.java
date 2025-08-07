@@ -39,7 +39,7 @@ public class L05 extends JFrame {
     glEventListener = new L05_GLEventListener(camera);
     canvas.addGLEventListener(glEventListener);
     canvas.addMouseMotionListener(new MyMouseInput(camera));
-    canvas.addKeyListener(new MyKeyboardInput(camera));
+    canvas.addKeyListener(new MyKeyboardInput(camera, (L05_GLEventListener)glEventListener));
   }
 
   private class windowHandler extends WindowAdapter {
@@ -54,11 +54,13 @@ public class L05 extends JFrame {
 
 class MyKeyboardInput extends KeyAdapter  {
   private Camera camera;
-  
-  public MyKeyboardInput(Camera camera) {
+  private L05_GLEventListener glevent;
+
+  public MyKeyboardInput(Camera camera, L05_GLEventListener glevent) {
     this.camera = camera;
+    this.glevent = glevent;
   }
-  
+
   public void keyPressed(KeyEvent e) {
     Camera.Movement m = Camera.Movement.NO_MOVEMENT;
     switch (e.getKeyCode()) {
@@ -68,6 +70,17 @@ class MyKeyboardInput extends KeyAdapter  {
       case KeyEvent.VK_DOWN:  m = Camera.Movement.DOWN;  break;
       case KeyEvent.VK_A:  m = Camera.Movement.FORWARD;  break;
       case KeyEvent.VK_Z:  m = Camera.Movement.BACK;  break;
+      case KeyEvent.VK_1: glevent.slideBase(-0.1f); break;
+      case KeyEvent.VK_2: glevent.slideBase(0.1f); break;
+      case KeyEvent.VK_3: glevent.rotateLowerArmY(-5f); break;
+      case KeyEvent.VK_4: glevent.rotateLowerArmY(5f); break;
+      case KeyEvent.VK_5: glevent.rotateLowerArmX(-5f); break;
+      case KeyEvent.VK_6: glevent.rotateLowerArmX(5f); break;
+      case KeyEvent.VK_7: glevent.rotateUpperArmX(-5f); break;
+      case KeyEvent.VK_8: glevent.rotateUpperArmX(5f); break;
+      case KeyEvent.VK_9: glevent.rotateHeadX(-5f); break;
+      case KeyEvent.VK_0: glevent.rotateHeadX(5f); break;
+      case KeyEvent.VK_L: glevent.toggleLamp(); break;
     }
     camera.keyboardInput(m);
   }
