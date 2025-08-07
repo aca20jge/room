@@ -228,7 +228,9 @@ public class Room {
     for (ModelMultipleLights m : parts) {
       m.render(gl);
     }
-    table.render(gl);
+    if (table != null) {
+      table.render(gl);
+    }
   }
 
   public void dispose(GL3 gl) {
@@ -240,6 +242,8 @@ public class Room {
     poster2Tex.destroy(gl);
     poster3Tex.destroy(gl);
     poster3Specular.destroy(gl);
-    table.dispose(gl);
+    if (table != null) {
+      table.dispose(gl);
+    }
   }
 }
