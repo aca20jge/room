@@ -113,8 +113,8 @@ public class Room {
     Vec3 basecolor = new Vec3(0.5f, 0.5f, 0.5f);
     Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
 
-    float windowW = 6f;
-    float windowH = 6f;
+    float windowW = 5f;
+    float windowH = 5f;
     float sideW = (size - windowW) * 0.5f;
     float borderH = (size - windowH) * 0.5f;
 
@@ -143,8 +143,8 @@ public class Room {
     String name = "cloud";
     Vec3 basecolor = new Vec3(1.0f, 1.0f, 1.0f);
     Material material = new Material(basecolor, basecolor, new Vec3(0.3f, 0.3f, 0.3f), 4.0f);
-    float windowW = 6f;
-    float windowH = 6f;
+    float windowW = 5f;
+    float windowH = 5f;
     float w = windowW + 0.5f;
     float h = windowH + 0.5f;
     float windowCentreY = (size - windowH) * 0.5f + windowH * 0.5f;
