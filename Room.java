@@ -18,7 +18,11 @@ public class Room {
    * Legacy constructor that assumes the wall texture is also used for the window.
    * This allows older code which passed only floor and wall textures to continue
    * compiling after the introduction of a dedicated window texture.
+   *
+   * @deprecated Prefer {@link #Room(GL3, Camera, Light[], Texture, Texture, Texture)}
+   *             to supply a dedicated window texture.
    */
+  @Deprecated
   public Room(GL3 gl, Camera c, Light[] l, Texture floorTex, Texture wallTex) {
     this(gl, c, l, floorTex, wallTex, wallTex);
   }
