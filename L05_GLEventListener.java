@@ -28,10 +28,10 @@ public class L05_GLEventListener implements GLEventListener {
    */
 
   /* Initialisation */
-  public void init(GLAutoDrawable drawable) {   
+  public void init(GLAutoDrawable drawable) {
     GL3 gl = drawable.getGL().getGL3();
     System.err.println("Chosen GLCapabilities: " + drawable.getChosenGLCapabilities());
-    gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f); 
+    gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     gl.glClearDepth(1.0f);
     gl.glEnable(GL.GL_DEPTH_TEST);
     gl.glDepthFunc(GL.GL_LESS);
@@ -39,7 +39,6 @@ public class L05_GLEventListener implements GLEventListener {
     gl.glEnable(GL.GL_CULL_FACE); // default is 'not enabled' so needs to be enabled
     gl.glCullFace(GL.GL_BACK);   // default is 'back', assuming CCW
     initialise(gl);
-    startTime = getSeconds();
   }
   
   /* Called to indicate the drawing surface has been moved and/or resized  */
@@ -61,7 +60,6 @@ public class L05_GLEventListener implements GLEventListener {
     GL3 gl = drawable.getGL().getGL3();
     room.dispose(gl);
     lights[0].dispose(gl);
-    lights[1].dispose(gl);
     textures.destroy(gl);
   }
 
@@ -75,7 +73,7 @@ public class L05_GLEventListener implements GLEventListener {
   private TextureLibrary textures;
 
   private Room room;
-  private Light[] lights = new Light[2];
+  private Light[] lights = new Light[1];
 
   private void loadTextures(GL3 gl) {
     textures = new TextureLibrary();
@@ -89,48 +87,15 @@ public class L05_GLEventListener implements GLEventListener {
 
     lights[0] = new Light(gl);
     lights[0].setCamera(camera);
-    lights[1] = new Light(gl);
-    lights[1].setCamera(camera);
+    lights[0].setPosition(new Vec3(0f, 10f, 0f));
     room = new Room(gl, camera, lights, textures.get("chequerboard"), textures.get("container_diffuse"), textures.get("cloud"));
   }
   
   public void render(GL3 gl) {
     gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
-    lights[0].setPosition(getLight0Position());  // changing light position each frame
     lights[0].render(gl);
 
-    lights[1].setPosition(getLight1Position());  // changing light position each frame
-    lights[1].render(gl);
-    
     room.render(gl);
   }
-  
-  // The light's position is continually being changed, so needs to be calculated for each frame.
-  private Vec3 getLight0Position() {
-    double elapsedTime = getSeconds()-startTime;
-    float x = 8.0f*(float)(Math.sin(Math.toRadians(elapsedTime*50)));
-    float y = 3.4f;
-    float z = 5.0f*(float)(Math.cos(Math.toRadians(elapsedTime*50)));
-    return new Vec3(x,y,z);
-  }
-
-  private Vec3 getLight1Position() {
-    double elapsedTime = getSeconds()-startTime;
-    float x = 8.0f*(float)(Math.sin(Math.toRadians(elapsedTime*80)));
-    float y = 7.4f;
-    float z = 3.0f*(float)(Math.cos(Math.toRadians(elapsedTime*80)));
-    return new Vec3(x,y,z);
-  }
-
-    // ***************************************************
-  /* TIME
-   */
-  
-  private double startTime;
-  
-  private double getSeconds() {
-    return System.currentTimeMillis()/1000.0;
-  }
-
 }
