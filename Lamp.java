@@ -33,7 +33,8 @@ public class Lamp {
 
   // placement on table
   private float tableTop = 1.3f;
-  private float baseZ = -3.25f;
+  private float baseX = 1.75f;
+  private float baseZ = -3.75f;
 
   private ModelMultipleLights base, lowerArm, upperArm, head, leftHorn, rightHorn, bulbModel;
 
@@ -112,7 +113,7 @@ public class Lamp {
   private Mat4 baseMatrix() {
     Mat4 m = new Mat4(1);
     m = Mat4.multiply(Mat4Transform.scale(baseW, baseH, baseD), m);
-    m = Mat4.multiply(Mat4Transform.translate(0, tableTop + baseH/2f, baseZ + baseSlide), m);
+    m = Mat4.multiply(Mat4Transform.translate(baseX, tableTop + baseH/2f, baseZ + baseSlide), m);
     return m;
   }
 
@@ -122,7 +123,7 @@ public class Lamp {
     m = Mat4.multiply(Mat4Transform.translate(0, armL*0.5f, 0), m);
     m = Mat4.multiply(Mat4Transform.rotateAroundX(lowerX), m);
     m = Mat4.multiply(Mat4Transform.rotateAroundY(lowerY), m);
-    m = Mat4.multiply(Mat4Transform.translate(0, tableTop + baseH, baseZ + baseSlide), m);
+    m = Mat4.multiply(Mat4Transform.translate(baseX, tableTop + baseH, baseZ + baseSlide), m);
     return m;
   }
 
@@ -134,7 +135,7 @@ public class Lamp {
     m = Mat4.multiply(Mat4Transform.translate(0, armL, 0), m);
     m = Mat4.multiply(Mat4Transform.rotateAroundX(lowerX), m);
     m = Mat4.multiply(Mat4Transform.rotateAroundY(lowerY), m);
-    m = Mat4.multiply(Mat4Transform.translate(0, tableTop + baseH, baseZ + baseSlide), m);
+    m = Mat4.multiply(Mat4Transform.translate(baseX, tableTop + baseH, baseZ + baseSlide), m);
     return m;
   }
 
@@ -148,7 +149,7 @@ public class Lamp {
     m = Mat4.multiply(Mat4Transform.translate(0, armL, 0), m);
     m = Mat4.multiply(Mat4Transform.rotateAroundX(lowerX), m);
     m = Mat4.multiply(Mat4Transform.rotateAroundY(lowerY), m);
-    m = Mat4.multiply(Mat4Transform.translate(0, tableTop + baseH, baseZ + baseSlide), m);
+    m = Mat4.multiply(Mat4Transform.translate(baseX, tableTop + baseH, baseZ + baseSlide), m);
     return m;
   }
 
@@ -163,7 +164,7 @@ public class Lamp {
     m = Mat4.multiply(Mat4Transform.translate(0, armL, 0), m);
     m = Mat4.multiply(Mat4Transform.rotateAroundX(lowerX), m);
     m = Mat4.multiply(Mat4Transform.rotateAroundY(lowerY), m);
-    m = Mat4.multiply(Mat4Transform.translate(0, tableTop + baseH, baseZ + baseSlide), m);
+    m = Mat4.multiply(Mat4Transform.translate(baseX, tableTop + baseH, baseZ + baseSlide), m);
     return m;
   }
 
@@ -177,7 +178,7 @@ public class Lamp {
     m = Mat4.multiply(Mat4Transform.translate(0, armL, 0), m);
     m = Mat4.multiply(Mat4Transform.rotateAroundX(lowerX), m);
     m = Mat4.multiply(Mat4Transform.rotateAroundY(lowerY), m);
-    m = Mat4.multiply(Mat4Transform.translate(0, tableTop + baseH, baseZ + baseSlide), m);
+    m = Mat4.multiply(Mat4Transform.translate(baseX, tableTop + baseH, baseZ + baseSlide), m);
     return m;
   }
 

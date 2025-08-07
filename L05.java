@@ -81,6 +81,8 @@ class MyKeyboardInput extends KeyAdapter  {
       case KeyEvent.VK_9: glevent.rotateHeadX(-5f); break;
       case KeyEvent.VK_0: glevent.rotateHeadX(5f); break;
       case KeyEvent.VK_L: glevent.toggleLamp(); break;
+      case KeyEvent.VK_O: glevent.rotateLaptopLid(5f); break;
+      case KeyEvent.VK_P: glevent.rotateLaptopLid(-5f); break;
     }
     camera.keyboardInput(m);
   }
