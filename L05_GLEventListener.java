@@ -95,7 +95,7 @@ public class L05_GLEventListener implements GLEventListener {
     lights[0].setCamera(camera);
     lights[1] = new Light(gl);
     lights[1].setCamera(camera);
-    room = new Room(gl, camera, lights, textures.get("chequerboard"), textures.get("cloud"));
+    room = new Room(gl, camera, lights, textures.get("chequerboard"), textures.get("container_diffuse"), textures.get("cloud"));
     container = new Container(gl, camera, lights, textures.get("container_diffuse"), textures.get("container_specular"));
   }
   
