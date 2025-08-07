@@ -14,6 +14,7 @@ public class Room {
   private Texture noticeboardTex, poster1Tex, poster2Tex, poster3Tex, poster3Specular;
   // Adjusted room size to better align with noticeboard dimensions
   private float size = 8f;
+  private Table table;
 
   /**
    * Legacy constructor that assumes the wall texture is also used for the window.
@@ -58,6 +59,8 @@ public class Room {
     parts.add(makePoster(gl, -2f, poster1Tex, null));
     parts.add(makePoster(gl, 0f, poster2Tex, null));
     parts.add(makePoster(gl, 2f, poster3Tex, poster3Specular));
+
+    table = new Table(gl, camera, lights, size);
   }
 
   private ModelMultipleLights makeFloor(GL3 gl) {
@@ -225,6 +228,7 @@ public class Room {
     for (ModelMultipleLights m : parts) {
       m.render(gl);
     }
+    table.render(gl);
   }
 
   public void dispose(GL3 gl) {
@@ -236,5 +240,6 @@ public class Room {
     poster2Tex.destroy(gl);
     poster3Tex.destroy(gl);
     poster3Specular.destroy(gl);
+    table.dispose(gl);
   }
 }
