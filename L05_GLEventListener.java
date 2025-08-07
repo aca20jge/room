@@ -59,7 +59,6 @@ public class L05_GLEventListener implements GLEventListener {
   /* Clean up memory */
   public void dispose(GLAutoDrawable drawable) {
     GL3 gl = drawable.getGL().getGL3();
-    container.dispose(gl);
     room.dispose(gl);
     lights[0].dispose(gl);
     lights[1].dispose(gl);
@@ -76,19 +75,16 @@ public class L05_GLEventListener implements GLEventListener {
   private TextureLibrary textures;
 
   private Room room;
-  private Container container;
   private Light[] lights = new Light[2];
 
   private void loadTextures(GL3 gl) {
     textures = new TextureLibrary();
     textures.add(gl, "container_diffuse", "assets/textures/container2.jpg");
-    textures.add(gl, "container_specular", "assets/textures/container2_specular.jpg");
     textures.add(gl, "chequerboard", "assets/textures/chequerboard.jpg");
     textures.add(gl, "cloud", "assets/textures/cloud.jpg");
   }
 
   public void initialise(GL3 gl) {
-    createRandomNumbers();
     loadTextures(gl);
 
     lights[0] = new Light(gl);
@@ -96,7 +92,6 @@ public class L05_GLEventListener implements GLEventListener {
     lights[1] = new Light(gl);
     lights[1].setCamera(camera);
     room = new Room(gl, camera, lights, textures.get("chequerboard"), textures.get("container_diffuse"), textures.get("cloud"));
-    container = new Container(gl, camera, lights, textures.get("container_diffuse"), textures.get("container_specular"));
   }
   
   public void render(GL3 gl) {
@@ -107,11 +102,6 @@ public class L05_GLEventListener implements GLEventListener {
 
     lights[1].setPosition(getLight1Position());  // changing light position each frame
     lights[1].render(gl);
-    
-    for (int i=0; i<100; ++i) {
-      container.setModelMatrix(getModelMatrix(i));
-      container.render(gl);
-    }
     
     room.render(gl);
   }
@@ -133,71 +123,14 @@ public class L05_GLEventListener implements GLEventListener {
     return new Vec3(x,y,z);
   }
 
-  // This method is used to set a random position for each container 
-  // and a rotation based on the elapsed time.
-  private Mat4 getModelMatrix(int i) {
-    double elapsedTime = getSeconds()-startTime;
-    Mat4 m = new Mat4(1);    
-    float yAngle = (float)(elapsedTime*10*randoms[(i+637)%NUM_RANDOMS]);
-    float multiplier = 12.0f;
-    float x = multiplier*randoms[i%NUM_RANDOMS] - multiplier*0.5f;
-    float y = 0.5f+ (multiplier*0.5f) + multiplier*randoms[(i+137)%NUM_RANDOMS] - multiplier*0.5f;
-    float z = multiplier*randoms[(i+563)%NUM_RANDOMS] - multiplier*0.5f;
-    m = Mat4.multiply(m, Mat4Transform.translate(x,y,z));
-    m = Mat4.multiply(m, Mat4Transform.rotateAroundY(yAngle));
-    return m;
-  }
-  
     // ***************************************************
   /* TIME
-   */ 
+   */
   
   private double startTime;
   
   private double getSeconds() {
     return System.currentTimeMillis()/1000.0;
   }
-  
-    // ***************************************************
-  /* An array of random numbers
-   */ 
-  
-  private int NUM_RANDOMS = 1000;
-  private float[] randoms;
-  
-  private void createRandomNumbers() {
-    randoms = new float[NUM_RANDOMS];
-    for (int i=0; i<NUM_RANDOMS; ++i) {
-      randoms[i] = (float)Math.random();
-    }
-  }
-  
-}
 
-// I've used an inner class here. A separate class would be better.
-
-class Container {
-  
-  private ModelMultipleLights cube;
-
-  public Container(GL3 gl, Camera camera, Light[] lights, Texture t_diffuse, Texture t_specular) {
-    String name = "container";
-    Mesh mesh = new Mesh(gl, Cube.vertices.clone(), Cube.indices.clone());
-    Shader shader = new Shader(gl, "assets/shaders/vs_standard.txt", "assets/shaders/fs_standard_m_2t.txt");
-    Material material = new Material(new Vec3(1.0f, 0.5f, 0.31f), new Vec3(1.0f, 0.5f, 0.31f), new Vec3(0.5f, 0.5f, 0.5f), 32.0f);
-    // diffuse and specular textures
-    cube = new ModelMultipleLights(name, mesh, new Mat4(1), shader, material, lights, camera, t_diffuse, t_specular);
-  }
-
-  public void setModelMatrix(Mat4 m) {
-    cube.setModelMatrix(m);
-  }
-
-  public void render(GL3 gl) {
-    cube.render(gl);
-  }
-
-  public void dispose(GL3 gl) {
-    cube.dispose(gl);
-  }
 }
