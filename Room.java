@@ -12,7 +12,8 @@ public class Room {
   private Light[] lights;
   private Texture floorTex, wallTex, windowTex;
   private Texture noticeboardTex, poster1Tex, poster2Tex, poster3Tex, poster3Specular;
-  private float size = 16f;
+  // Adjusted room size to better align with noticeboard dimensions
+  private float size = 8f;
 
   /**
    * Legacy constructor that assumes the wall texture is also used for the window.
