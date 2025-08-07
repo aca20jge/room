@@ -13,3 +13,4 @@ Lamp adjustments
 9 / 0: rotate the head around the x‑axis
 
 L: toggle the spotlight on/off
+O / P: open or close the laptop lid

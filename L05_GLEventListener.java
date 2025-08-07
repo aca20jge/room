@@ -60,6 +60,7 @@ public class L05_GLEventListener implements GLEventListener {
     GL3 gl = drawable.getGL().getGL3();
     room.dispose(gl);
     if (lamp != null) lamp.dispose(gl);
+    if (laptop != null) laptop.dispose(gl);
     lights[0].dispose(gl);
     lights[1].dispose(gl);
     textures.destroy(gl);
@@ -77,6 +78,7 @@ public class L05_GLEventListener implements GLEventListener {
   private Room room;
   private Light[] lights = new Light[2];
   private Lamp lamp;
+  private Laptop laptop;
 
   private void loadTextures(GL3 gl) {
     textures = new TextureLibrary();
@@ -98,6 +100,7 @@ public class L05_GLEventListener implements GLEventListener {
     lights[1].setOuterCutOff((float)Math.cos(Math.toRadians(25f)));
     room = new Room(gl, camera, lights, textures.get("chequerboard"), textures.get("container_diffuse"), textures.get("cloud"));
     lamp = new Lamp(gl, camera, lights, lights[1]);
+    laptop = new Laptop(gl, camera, lights);
   }
   
   public void render(GL3 gl) {
@@ -105,6 +108,7 @@ public class L05_GLEventListener implements GLEventListener {
 
     lights[0].render(gl);
     lamp.render(gl);
+    if (laptop != null) laptop.render(gl);
     room.render(gl);
   }
 
@@ -114,4 +118,5 @@ public class L05_GLEventListener implements GLEventListener {
   public void rotateUpperArmX(float d) { if (lamp!=null) lamp.rotateUpperArmX(d); }
   public void rotateHeadX(float d) { if (lamp!=null) lamp.rotateHeadX(d); }
   public void toggleLamp() { if (lamp!=null) lamp.toggleLight(); }
+  public void rotateLaptopLid(float d) { if (laptop!=null) laptop.rotateLid(d); }
 }
