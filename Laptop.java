@@ -65,7 +65,8 @@ public class Laptop {
     Mat4 m = new Mat4(1);
     m = Mat4.multiply(Mat4Transform.scale(baseW, lidH, baseD), m);
     m = Mat4.multiply(Mat4Transform.translate(0, lidH*0.5f, baseD*0.5f), m);
-    m = Mat4.multiply(Mat4Transform.rotateAroundX(lidAngle), m);
+    // rotate lid so positive angles open it upward rather than through the table
+    m = Mat4.multiply(Mat4Transform.rotateAroundX(-lidAngle), m);
     m = Mat4.multiply(Mat4Transform.translate(0, tableTop + baseH, tableZ - baseD*0.5f), m);
     return m;
   }
