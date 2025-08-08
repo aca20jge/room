@@ -1,4 +1,7 @@
+use L05.Java as the access point for running the program
+
 Controls
+
 Camera movement
 
 Arrow keys: move the camera left, right, up, or down
@@ -13,4 +16,5 @@ Lamp adjustments
 9 / 0: rotate the head around the x‑axis
 
 L: toggle the spotlight on/off
+
 O / P: open or close the laptop lid
