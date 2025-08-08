@@ -4,9 +4,9 @@ import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.glsl.*;
 import com.jogamp.opengl.util.texture.*;
 
-/**
- * Simple wooden table composed of a cuboid top and four cuboid legs.
- */
+
+/* I declare that this code is my own work */
+/* Author Jack Edwards jgedwards1@sheffield.ac.uk */
 public class Table {
 
   private ArrayList<ModelMultipleLights> parts;

@@ -5,6 +5,10 @@ import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.glsl.*;
 import com.jogamp.opengl.util.texture.*;
 
+
+/* I declare that this code is my own work */
+/* Author Jack Edwards jgedwards1@sheffield.ac.uk */
+
 public class Room {
 
   private ArrayList<ModelMultipleLights> parts;
@@ -17,9 +21,6 @@ public class Room {
   private Table table;
 
   /**
-   * Legacy constructor that assumes the wall texture is also used for the window.
-   * This allows older code which passed only floor and wall textures to continue
-   * compiling after the introduction of a dedicated window texture.
    *
    * @deprecated Prefer {@link #Room(GL3, Camera, Light[], Texture, Texture, Texture)}
    *             to supply a dedicated window texture.

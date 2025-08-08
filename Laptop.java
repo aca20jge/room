@@ -4,9 +4,8 @@ import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.glsl.*;
 import com.jogamp.opengl.util.texture.*;
 
-/**
- * Simple laptop model consisting of a base and a lid that can open and close.
- */
+/* I declare that this code is my own work */
+/* Author Jack Edwards jgedwards1@sheffield.ac.uk */
 public class Laptop {
 
   private Camera camera;
@@ -15,15 +14,15 @@ public class Laptop {
 
   private ModelMultipleLights base, lid;
 
-  // placement relative to table
+  // placement on teable
   private float tableTop = 1.3f;
   private float tableZ = -3.25f;
 
   // dimensions
   private float baseW = 1.0f, baseD = 0.6f, baseH = 0.05f;
-  private float lidH = 0.05f; // thickness of lid
+  private float lidH = 0.05f; 
 
-  private float lidAngle = 90f; // start open
+  private float lidAngle = 90f; 
 
   public Laptop(GL3 gl, Camera camera, Light[] lights) {
     this.camera = camera;
@@ -65,7 +64,7 @@ public class Laptop {
     Mat4 m = new Mat4(1);
     m = Mat4.multiply(Mat4Transform.scale(baseW, lidH, baseD), m);
     m = Mat4.multiply(Mat4Transform.translate(0, lidH*0.5f, baseD*0.5f), m);
-    // rotate lid so positive angles open it upward rather than through the table
+    // rotate lid so positive angles open it upward 
     m = Mat4.multiply(Mat4Transform.rotateAroundX(-lidAngle), m);
     m = Mat4.multiply(Mat4Transform.translate(0, tableTop + baseH, tableZ - baseD*0.5f), m);
     return m;

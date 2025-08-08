@@ -14,7 +14,7 @@ public class Light {
   private Mat4 model;
   private Shader shader;
   private Camera camera;
-  //private Mat4 perspective;
+  
     
   public Light(GL3 gl) {
     material = new Material();
@@ -93,11 +93,9 @@ public class Light {
     return on;
   }
   
-  /*public void setPerspective(Mat4 perspective) {
-    this.perspective = perspective;
-  }*/
+
   
-  public void render(GL3 gl) { //, Mat4 perspective, Mat4 view) {
+  public void render(GL3 gl) { 
     Mat4 model = new Mat4(1);
     model = Mat4.multiply(Mat4Transform.scale(0.3f,0.3f,0.3f), model);
     model = Mat4.multiply(Mat4Transform.translate(position), model);

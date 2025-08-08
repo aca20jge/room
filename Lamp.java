@@ -4,10 +4,8 @@ import com.jogamp.opengl.*;
 import com.jogamp.opengl.util.glsl.*;
 import com.jogamp.opengl.util.texture.*;
 
-/**
- * Hierarchical angle-poise lamp with a decorative pair of horns and a
- * spotlight located at the nose. Simple cubes are used for all geometry.
- */
+/* I declare that this code is my own work */
+/* Author Jack Edwards jgedwards1@sheffield.ac.uk */
 public class Lamp {
 
   private ArrayList<ModelMultipleLights> parts;
